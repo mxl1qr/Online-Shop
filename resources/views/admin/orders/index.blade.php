@@ -3,24 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Pesanan — Admin Panel</title>
+    <title>Kelola Pesanan — SIRKULA Admin Panel</title>
+    
+    <!-- Google Fonts Trio dari DESIGN.md -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-body     { font-family: 'Montserrat', sans-serif; }
+        .font-label    { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body class="bg-gray-100 text-gray-900 antialiased font-sans">
+<body class="bg-[#f7faf9] text-[#181c1c] antialiased font-body selection:bg-[#002547] selection:text-white">
 
     <!-- Top Admin Bar -->
-    <header class="bg-gray-900 text-white sticky top-0 z-50">
+    <header class="bg-[#002547] text-white sticky top-0 z-50 border-b border-[#001830]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <span class="bg-red-600 text-white text-xs font-black px-2 py-1 uppercase rounded-xs">ADMIN</span>
-                <span class="font-bold text-sm tracking-wide">NUEVA STORE MANAGEMENT</span>
+                <span class="w-8 h-8 bg-[#85f9bf] text-[#002547] flex items-center justify-center font-headline font-black text-sm">
+                    S
+                </span>
+                <div class="flex flex-col">
+                    <span class="font-headline font-bold text-sm tracking-wide text-white">SIRKULA MANAGEMENT</span>
+                    <span class="font-label text-[9px] uppercase tracking-widest text-[#85f9bf] font-bold">Admin Backoffice</span>
+                </div>
             </div>
 
-            <div class="flex items-center space-x-6 text-xs font-medium">
-                <a href="{{ route('products.index') }}" target="_blank" class="text-gray-300 hover:text-white">
-                    Lihat Toko Publik &rarr;
+            <div class="flex items-center space-x-6 font-label text-xs">
+                <a href="{{ route('products.index') }}" target="_blank" class="text-white/80 hover:text-white transition flex items-center space-x-1">
+                    <span>Lihat Toko Publik</span>
+                    <span>&rarr;</span>
                 </a>
-                <span class="text-gray-400">{{ Auth::user()->name }}</span>
+                <span class="bg-white/10 px-2.5 py-1 text-white font-semibold">
+                    {{ Auth::user()->name }}
+                </span>
             </div>
         </div>
     </header>
@@ -29,71 +49,77 @@
         
         <!-- Notifikasi -->
         @if(session('success'))
-            <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-800 text-xs font-semibold rounded-xs">
-                {{ session('success') }}
+            <div class="mb-6 p-4 bg-[#85f9bf]/20 border border-[#85f9bf] text-[#006c47] font-label text-xs font-bold flex items-center justify-between">
+                <span>✓ {{ session('success') }}</span>
+                <button type="button" onclick="this.parentElement.remove()" class="text-[#006c47] hover:opacity-70 font-bold">&times;</button>
             </div>
         @endif
 
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
-                <h1 class="text-2xl font-black text-gray-900 tracking-tight">Kelola Pesanan Masuk</h1>
-                <p class="text-xs text-gray-500 mt-1">Verifikasi pembayaran transfer bank dan ubah status pengiriman pakaian.</p>
+                <h1 class="font-headline text-2xl font-extrabold text-[#002547] tracking-tight">
+                    Kelola Pesanan Pakaian Masuk
+                </h1>
+                <p class="font-body text-xs text-[#73777f] mt-0.5">
+                    Verifikasi bukti transfer bank pembeli, atur proses sanitasi SirkulaCare, dan perbarui status pengiriman.
+                </p>
             </div>
         </div>
 
         <!-- Filter Tab Status -->
-        <div class="flex flex-wrap gap-2 mb-6 text-xs font-semibold">
+        <div class="flex flex-wrap gap-2 mb-6 font-label text-xs font-bold uppercase tracking-wider">
             <a href="{{ route('admin.orders.index') }}" 
-               class="px-4 py-2 rounded-xs border transition {{ !request('status') ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50' }}">
+               class="px-3.5 py-2 border transition {{ !request('status') ? 'bg-[#002547] text-white border-[#002547]' : 'bg-white text-[#73777f] border-[#e0e3e2] hover:border-[#002547]' }}">
                 Semua ({{ $counts['all'] }})
             </a>
             <a href="{{ route('admin.orders.index', ['status' => 'pending']) }}" 
-               class="px-4 py-2 rounded-xs border transition {{ request('status') == 'pending' ? 'bg-yellow-500 text-white border-yellow-500' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50' }}">
-                Menunggu Pembayaran ({{ $counts['pending'] }})
+               class="px-3.5 py-2 border transition {{ request('status') == 'pending' ? 'bg-[#002547] text-white border-[#002547]' : 'bg-white text-[#73777f] border-[#e0e3e2] hover:border-[#002547]' }}">
+                Menunggu Bayar ({{ $counts['pending'] }})
             </a>
             <a href="{{ route('admin.orders.index', ['status' => 'processing']) }}" 
-               class="px-4 py-2 rounded-xs border transition {{ request('status') == 'processing' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50' }}">
-                Sedang Dikemas ({{ $counts['processing'] }})
+               class="px-3.5 py-2 border transition {{ request('status') == 'processing' ? 'bg-[#002547] text-white border-[#002547]' : 'bg-white text-[#73777f] border-[#e0e3e2] hover:border-[#002547]' }}">
+                Disanitasi &amp; Dikemas ({{ $counts['processing'] }})
             </a>
             <a href="{{ route('admin.orders.index', ['status' => 'completed']) }}" 
-               class="px-4 py-2 rounded-xs border transition {{ request('status') == 'completed' ? 'bg-green-600 text-white border-green-600' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50' }}">
+               class="px-3.5 py-2 border transition {{ request('status') == 'completed' ? 'bg-[#002547] text-white border-[#002547]' : 'bg-white text-[#73777f] border-[#e0e3e2] hover:border-[#002547]' }}">
                 Selesai ({{ $counts['completed'] }})
             </a>
         </div>
 
         <!-- Tabel Pesanan -->
-        <div class="bg-white border border-gray-200 rounded-xs overflow-hidden shadow-xs">
+        <div class="bg-white border border-[#e0e3e2] overflow-hidden">
             @if($orders->isEmpty())
-                <div class="p-12 text-center text-gray-500 text-sm">
-                    Tidak ada pesanan pada status ini.
+                <div class="p-16 text-center text-[#73777f] font-body text-xs">
+                    Tidak ada transaksi pada filter status ini.
                 </div>
             @else
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs divide-y divide-gray-200">
-                        <thead class="bg-gray-50 text-gray-500 uppercase tracking-wider font-semibold">
+                    <table class="w-full text-left text-xs divide-y divide-[#e0e3e2]">
+                        <thead class="bg-[#f1f4f3] text-[#002547] font-label font-bold uppercase tracking-wider text-[11px]">
                             <tr>
-                                <th class="p-4">No. Pesanan & Waktu</th>
-                                <th class="p-4">Pembeli & Penerima</th>
+                                <th class="p-4">No. Pesanan &amp; Waktu</th>
+                                <th class="p-4">Penerima &amp; Alamat</th>
                                 <th class="p-4">Item Pakaian</th>
-                                <th class="p-4">Total & Bank</th>
+                                <th class="p-4">Total &amp; Bank</th>
                                 <th class="p-4">Status</th>
                                 <th class="p-4 text-right">Ubah Status</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
+                        <tbody class="divide-y divide-[#e0e3e2] font-body">
                             @foreach($orders as $order)
-                                <tr class="hover:bg-gray-50/80 transition">
-                                    <!-- No. Pesanan -->
+                                <tr class="hover:bg-[#f7faf9] transition">
+                                    
+                                    <!-- No. Pesanan & Waktu -->
                                     <td class="p-4 align-top">
-                                        <strong class="font-mono text-gray-900 block">{{ $order->order_number }}</strong>
-                                        <span class="text-gray-400 text-[11px]">{{ $order->created_at->format('d/m/Y H:i') }}</span>
+                                        <strong class="font-label font-bold text-[#002547] block text-xs tracking-wider">{{ $order->order_number }}</strong>
+                                        <span class="font-label text-[#73777f] text-[10px]">{{ $order->created_at->format('d/m/Y H:i') }} WIB</span>
                                     </td>
 
-                                    <!-- Pembeli -->
+                                    <!-- Penerima -->
                                     <td class="p-4 align-top">
-                                        <strong class="text-gray-900 block">{{ $order->shipping_name }}</strong>
-                                        <span class="text-gray-500 block">{{ $order->shipping_phone }}</span>
-                                        <p class="text-[11px] text-gray-400 mt-1 max-w-xs line-clamp-2" title="{{ $order->shipping_address }}">
+                                        <strong class="text-[#181c1c] block font-headline font-semibold text-xs">{{ $order->shipping_name }}</strong>
+                                        <span class="text-[#73777f] font-label text-[11px] block">{{ $order->shipping_phone }}</span>
+                                        <p class="text-[11px] text-[#43474e] mt-1 max-w-xs line-clamp-2" title="{{ $order->shipping_address }}">
                                             {{ $order->shipping_address }}
                                         </p>
                                     </td>
@@ -103,8 +129,8 @@
                                         <ul class="space-y-1">
                                             @foreach($order->items as $item)
                                                 <li>
-                                                    <span class="font-medium text-gray-900">{{ $item->product_name }}</span>
-                                                    <span class="text-gray-400 text-[11px]">({{ $item->variant_info }} &times; {{ $item->quantity }})</span>
+                                                    <span class="font-semibold text-[#181c1c]">{{ $item->product_name }}</span>
+                                                    <span class="text-[#73777f] font-label text-[10px]">({{ $item->variant_info }} &times; {{ $item->quantity }})</span>
                                                 </li>
                                             @endforeach
                                         </ul>
@@ -112,28 +138,30 @@
 
                                     <!-- Total & Bank -->
                                     <td class="p-4 align-top">
-                                        <strong class="text-gray-900 text-sm block">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</strong>
-                                        <span class="uppercase text-[10px] font-mono bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-xs">
-                                            {{ $order->payment_method }}
+                                        <strong class="font-label text-sm font-bold text-[#002547] block">
+                                            Rp {{ number_format($order->total_amount, 0, ',', '.') }}
+                                        </strong>
+                                        <span class="font-label uppercase text-[10px] bg-[#f1f4f3] text-[#002547] font-bold px-1.5 py-0.5 border border-[#e0e3e2]">
+                                            Transfer {{ $order->payment_method }}
                                         </span>
                                     </td>
 
                                     <!-- Status Saat Ini -->
-                                    <td class="p-4 align-top">
+                                    <td class="p-4 align-top font-label">
                                         @if($order->status === 'pending')
-                                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 font-bold uppercase text-[10px] tracking-wider rounded-xs inline-block">
+                                            <span class="px-2 py-0.5 bg-yellow-50 text-yellow-800 border border-yellow-200 font-bold uppercase text-[9px] tracking-wider inline-block">
                                                 Menunggu Bayar
                                             </span>
                                         @elseif($order->status === 'processing')
-                                            <span class="px-2 py-1 bg-blue-100 text-blue-800 font-bold uppercase text-[10px] tracking-wider rounded-xs inline-block">
-                                                Dikemas
+                                            <span class="px-2 py-0.5 bg-[#85f9bf]/40 text-[#006c47] border border-[#85f9bf] font-bold uppercase text-[9px] tracking-wider inline-block">
+                                                Disanitasi &amp; Kemas
                                             </span>
                                         @elseif($order->status === 'completed')
-                                            <span class="px-2 py-1 bg-green-100 text-green-800 font-bold uppercase text-[10px] tracking-wider rounded-xs inline-block">
-                                                Selesai
+                                            <span class="px-2 py-0.5 bg-[#006c47] text-white font-bold uppercase text-[9px] tracking-wider inline-block">
+                                                Selesai ✓
                                             </span>
                                         @else
-                                            <span class="px-2 py-1 bg-red-100 text-red-800 font-bold uppercase text-[10px] tracking-wider rounded-xs inline-block">
+                                            <span class="px-2 py-0.5 bg-red-50 text-red-700 border border-red-200 font-bold uppercase text-[9px] tracking-wider inline-block">
                                                 Batal
                                             </span>
                                         @endif
@@ -141,27 +169,28 @@
 
                                     <!-- Form Update Status Cepat -->
                                     <td class="p-4 align-top text-right">
-                                        <form action="{{ route('admin.orders.updateStatus', $order->id) }}" method="POST" class="inline-flex items-center space-x-1">
+                                        <form action="{{ route('admin.orders.updateStatus', $order->id) }}" method="POST" class="inline-flex items-center space-x-1 font-label">
                                             @csrf
                                             @method('PATCH')
-                                            <select name="status" class="text-xs border-gray-300 rounded-xs py-1 px-2 focus:ring-gray-900 focus:border-gray-900">
+                                            <select name="status" class="text-xs bg-[#f1f4f3] border border-[#e0e3e2] py-1 px-2 focus:ring-1 focus:ring-[#002547]">
                                                 <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="processing" {{ $order->status === 'processing' ? 'selected' : '' }}>Proses / Kemas</option>
-                                                <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Selesai</option>
+                                                <option value="processing" {{ $order->status === 'processing' ? 'selected' : '' }}>Proses / Sanitasi</option>
+                                                <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Selesai Kirim</option>
                                                 <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Batalkan</option>
                                             </select>
-                                            <button type="submit" class="bg-gray-900 hover:bg-black text-white text-[11px] font-bold px-2.5 py-1.5 rounded-xs transition">
-                                                Ubah
+                                            <button type="submit" class="bg-[#002547] hover:bg-[#000f23] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1.5 transition">
+                                                Update
                                             </button>
                                         </form>
                                     </td>
+
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
 
-                <div class="p-4 border-t border-gray-100">
+                <div class="p-4 border-t border-[#e0e3e2]">
                     {{ $orders->links() }}
                 </div>
             @endif

@@ -29,4 +29,12 @@ class Product extends Model
     {
         return $this->hasMany(ProductVariant::class);
     }
+
+    // Foto kedua untuk efek hover ala Uniqlo & H&M
+    public function getSecondaryImageAttribute(): ?string
+    {
+        if (!$this->image) return null;
+        $secondary = str_replace('-1.jpg', '-2.jpg', $this->image);
+        return file_exists(storage_path('app/public/' . $secondary)) ? $secondary : $this->image;
+    }
 }
