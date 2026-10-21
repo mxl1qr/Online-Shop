@@ -14,7 +14,7 @@ Homestead.yaml
 /vendor
 /public/build
 /public/hot
-/public/storage
+# /public/storage (included for Wasmer static asset hosting)
 /public/fonts-manifest.dev.json
 /compilation-results/
 

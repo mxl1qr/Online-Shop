@@ -92,13 +92,56 @@ Route::get('/deploy-setup', function (\Illuminate\Http\Request $request) {
         $outputs[] = "=== [2/3] SEED ERROR ===\n" . $e->getMessage();
     }
 
-    // 3. Run storage:link
+    // 3. Setup static assets in public/storage (Avoid symlink 403 on Wasmer phpix)
     try {
-        \Illuminate\Support\Facades\Artisan::call('storage:link');
-        $outputs[] = "=== [3/3] STORAGE LINK ===\n" . \Illuminate\Support\Facades\Artisan::output();
+        $publicStorage = public_path('storage');
+        if (is_link($publicStorage)) {
+            unlink($publicStorage);
+        }
+        if (!is_dir($publicStorage)) {
+            mkdir($publicStorage, 0755, true);
+        }
+
+        $sourceDir = storage_path('app/public');
+        if (is_dir($sourceDir)) {
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($sourceDir, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::SELF_FIRST
+            );
+            $copiedCount = 0;
+            foreach ($iterator as $item) {
+                $dest = $publicStorage . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+                if ($item->isDir()) {
+                    if (!is_dir($dest)) mkdir($dest, 0755, true);
+                } else {
+                    copy($item->getPathname(), $dest);
+                    $copiedCount++;
+                }
+            }
+            $outputs[] = "=== [3/3] STATIC STORAGE SYNC ===\nSuccessfully synced {$copiedCount} lookbook and banner assets directly into public/storage!";
+        }
     } catch (\Throwable $e) {
-        $outputs[] = "=== [3/3] STORAGE LINK NOTICE ===\n" . $e->getMessage();
+        $outputs[] = "=== [3/3] STATIC STORAGE NOTICE ===\n" . $e->getMessage();
     }
 
     return response('<pre style="background:#002547;color:#34d399;padding:28px;font-family:monospace;font-size:14px;border-radius:10px;line-height:1.6;">' . implode("\n\n", $outputs) . "\n\n=== SEMUA SETUP SELESAI! Silakan buka kembali homepage https://sirkula1.wasmer.app ===</pre>");
 });
+
+/*
+|--------------------------------------------------------------------------
+| 6. Direct Storage Asset Fallback Route (Wasmer phpix support)
+|--------------------------------------------------------------------------
+*/
+Route::get('/storage/{path}', function ($path) {
+    $publicPath = public_path('storage/' . $path);
+    if (file_exists($publicPath) && !is_dir($publicPath)) {
+        return response()->file($publicPath);
+    }
+
+    $storagePath = storage_path('app/public/' . $path);
+    if (file_exists($storagePath) && !is_dir($storagePath)) {
+        return response()->file($storagePath);
+    }
+
+    abort(404);
+})->where('path', '.*');
