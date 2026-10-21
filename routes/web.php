@@ -63,3 +63,42 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 // Route Autentikasi (Breeze)
 require __DIR__.'/auth.php';
+
+/*
+|--------------------------------------------------------------------------
+| 5. Utility Deployment Setup Route (Untuk Wasmer / Cloud tanpa Terminal)
+|--------------------------------------------------------------------------
+*/
+Route::get('/deploy-setup', function (\Illuminate\Http\Request $request) {
+    if ($request->query('key') !== 'sirkula2026') {
+        abort(403, 'Akses Ditolak: Kunci Rahasia Salah');
+    }
+
+    $outputs = [];
+
+    // 1. Run migrations
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        $outputs[] = "=== [1/3] MIGRATE ===\n" . \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Throwable $e) {
+        $outputs[] = "=== [1/3] MIGRATE ERROR ===\n" . $e->getMessage();
+    }
+
+    // 2. Run seeders
+    try {
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        $outputs[] = "=== [2/3] SEED DATABASE ===\n" . \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Throwable $e) {
+        $outputs[] = "=== [2/3] SEED ERROR ===\n" . $e->getMessage();
+    }
+
+    // 3. Run storage:link
+    try {
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        $outputs[] = "=== [3/3] STORAGE LINK ===\n" . \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Throwable $e) {
+        $outputs[] = "=== [3/3] STORAGE LINK NOTICE ===\n" . $e->getMessage();
+    }
+
+    return response('<pre style="background:#002547;color:#34d399;padding:28px;font-family:monospace;font-size:14px;border-radius:10px;line-height:1.6;">' . implode("\n\n", $outputs) . "\n\n=== SEMUA SETUP SELESAI! Silakan buka kembali homepage https://sirkula1.wasmer.app ===</pre>");
+});
