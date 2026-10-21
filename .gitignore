@@ -23,6 +23,7 @@ Homestead.yaml
 /storage/pail
 .phpunit.result.cache
 /.phpunit.cache
+/storage/firebase
 
 # SQLite Databases
 /database/*.sqlite
