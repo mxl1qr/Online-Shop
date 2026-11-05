@@ -5,39 +5,40 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'SIRKULA') }} — Masuk Akun</title>
+        <title>{{ config('app.name', 'SIRKULA') }} — Keanggotaan Member</title>
+        <link rel="icon" type="image/svg+xml" href="{{ asset('images/sirkula-icon.svg') }}">
 
         <!-- Google Fonts Trio dari DESIGN.md -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+        @include('partials.head-fonts')
 
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        <style>
-            .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
-            .font-body     { font-family: 'Montserrat', sans-serif; }
-            .font-label    { font-family: 'Inter', sans-serif; }
-        </style>
     </head>
-    <body class="bg-[#f7faf9] text-[#181c1c] antialiased font-body selection:bg-[#002547] selection:text-white">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-8 sm:pt-0 pb-12 px-4">
-            <div class="mb-6">
-                <a href="/">
-                    <x-application-logo />
+    <body class="min-h-screen flex flex-col bg-surface text-ink antialiased font-body selection:bg-navy selection:text-white">
+
+        <!-- Header Minimalis Auth (Ala Uniqlo Auth Header) -->
+        <header class="bg-white border-b border-line shrink-0">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <a href="{{ route('products.index') }}" class="group">
+                    @include('partials.brand-logo')
+                </a>
+                <a href="{{ route('products.index') }}" class="font-label text-sm font-semibold text-ink/80 hover:text-navy transition">
+                    &larr; Kembali ke Katalog
                 </a>
             </div>
+        </header>
 
-            <div class="w-full sm:max-w-md bg-white border border-[#e0e3e2] p-8">
+        <!-- Konten Utama Terpusat Proporsional dengan Ruang Napas Atas-Bawah -->
+        <main class="flex-1 flex items-center justify-center py-10 sm:py-14 px-4 sm:px-6">
+            <div class="w-full max-w-4xl">
                 {{ $slot }}
             </div>
+        </main>
 
-            <div class="mt-6 text-center">
-                <a href="{{ route('products.index') }}" class="font-label text-xs text-[#73777f] hover:text-[#002547] transition">
-                    &larr; Kembali ke Beranda Katalog
-                </a>
-            </div>
-        </div>
+        <!-- Footer Ringkas Auth -->
+        <footer class="bg-white border-t border-line py-4 px-4 text-center font-label text-sm text-muted shrink-0">
+            &copy; {{ date('Y') }} PT SIRKULASI INDONESIA LESTARI &bull; Standar Sanitasi Uap &amp; Ozon SirkulaCare
+        </footer>
+
     </body>
 </html>

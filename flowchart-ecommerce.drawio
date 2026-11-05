@@ -1,0 +1,175 @@
+<mxfile host="app.diagrams.net" agent="Antigravity">
+  <diagram id="ecommerce-flowchart" name="Alur Sistem E-Commerce Pakaian">
+    <mxGraphModel dx="1410" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1250" pageHeight="1000" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lane_customer" parent="1" style="swimlane;startSize=30;fillColor=#f7faf9;strokeColor=#002547;strokeWidth=1.5;fontStyle=1;fontFamily=Helvetica;fontSize=13;fontColor=#002547;rounded=1;arcSize=4;" value="Area Pelanggan (Storefront &amp; Member Hub)" vertex="1">
+          <mxGeometry height="910" width="700" x="40" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="start" parent="lane_customer" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#002547;strokeColor=#002547;fontColor=#ffffff;fontStyle=1;fontSize=12;" value="Mulai: Kunjungi Website" vertex="1">
+          <mxGeometry height="38" width="180" x="260" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="check_login" parent="lane_customer" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#002547;strokeWidth=1.5;fontColor=#002547;fontStyle=1;fontSize=12;" value="Sudah Login?" vertex="1">
+          <mxGeometry height="60" width="130" x="285" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="browse" parent="lane_customer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#002547;strokeWidth=1.2;fontColor=#181c1c;fontSize=12;" value="Eksplorasi Katalog &amp; Filter Kategori" vertex="1">
+          <mxGeometry height="46" width="220" x="90" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="member_hub" parent="lane_customer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2fe;strokeColor=#0284c7;strokeWidth=1.2;fontColor=#0369a1;fontStyle=1;fontSize=12;" value="Hub Keanggotaan (/member)&#xa;Barcode Member &amp; Riwayat Pesanan" vertex="1">
+          <mxGeometry height="46" width="230" x="400" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="pdp" parent="lane_customer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#002547;strokeWidth=1.2;fontColor=#181c1c;fontSize=12;" value="Halaman Produk (PDP)&#xa;Pilih Varian Ukuran, Warna, &amp; Stok" vertex="1">
+          <mxGeometry height="46" width="220" x="90" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="cart" parent="lane_customer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#002547;strokeWidth=1.2;fontColor=#181c1c;fontSize=12;" value="Keranjang Belanja (/cart)&#xa;Atur Kuantitas &amp; Cek Kupon Promo" vertex="1">
+          <mxGeometry height="46" width="220" x="90" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="check_checkout_auth" parent="lane_customer" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#002547;strokeWidth=1.5;fontColor=#002547;fontStyle=1;fontSize=11;" value="Sudah Login&#xa;untuk Checkout?" vertex="1">
+          <mxGeometry height="70" width="140" x="130" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="login_redirect" parent="lane_customer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#002547;strokeWidth=1.2;fontColor=#181c1c;fontSize=12;" value="Login / Register Pelanggan&#xa;(Otomatis kembali ke /checkout)" vertex="1">
+          <mxGeometry height="46" width="230" x="400" y="452" as="geometry" />
+        </mxCell>
+        <mxCell id="checkout" parent="lane_customer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#002547;strokeWidth=1.2;fontColor=#181c1c;fontSize=12;" value="Halaman Checkout (/checkout)&#xa;Input Data Penerima &amp; Pilih Bank" vertex="1">
+          <mxGeometry height="48" width="230" x="85" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="db_process" parent="lane_customer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#85f9bf;strokeColor=#006c47;strokeWidth=1.5;fontColor=#002547;fontStyle=1;fontSize=11;" value="Proses Transaksi Database:&#xa;1. Lock Stok Varian (lockForUpdate)&#xa;2. Kurangi Stok &amp; Simpan Status Pending" vertex="1">
+          <mxGeometry height="56" width="240" x="80" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="success_order" parent="lane_customer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#002547;strokeWidth=1.2;fontColor=#181c1c;fontSize=12;" value="Pesanan Berhasil (/checkout/success)&#xa;Tampil No. Rekening &amp; Total Tagihan" vertex="1">
+          <mxGeometry height="48" width="230" x="85" y="735" as="geometry" />
+        </mxCell>
+        <mxCell id="transfer" parent="lane_customer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#002547;strokeWidth=1.2;fontColor=#181c1c;fontSize=12;" value="Pelanggan Melakukan Transfer Bank&#xa;(BCA / Mandiri / BRI)" vertex="1">
+          <mxGeometry height="48" width="230" x="400" y="735" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="lane_customer" source="start" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;" target="check_login">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="lane_customer" source="check_login" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;labelBackgroundColor=none;fontColor=#002547;fontStyle=1;fontSize=11;" target="browse" value="Belum">
+          <mxGeometry relative="1" x="0.0345" y="-20" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="200" y="140" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="lane_customer" source="check_login" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;labelBackgroundColor=none;fontColor=#002547;fontStyle=1;fontSize=11;" target="member_hub" value="Customer">
+          <mxGeometry relative="1" x="0.0625" y="20" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="515" y="140" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="lane_customer" source="member_hub" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;" target="browse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="lane_customer" source="browse" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;" target="pdp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="lane_customer" source="pdp" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;" target="cart">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="lane_customer" source="cart" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;" target="check_checkout_auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="lane_customer" source="check_checkout_auth" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;labelBackgroundColor=none;fontColor=#002547;fontStyle=1;fontSize=11;" target="login_redirect" value="Belum">
+          <mxGeometry relative="1" x="-0.0769" y="15" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="lane_customer" source="check_checkout_auth" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;labelBackgroundColor=none;fontColor=#002547;fontStyle=1;fontSize=11;" target="checkout" value="Sudah">
+          <mxGeometry relative="1" x="-0.1111" y="20" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="lane_customer" source="login_redirect" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;" target="checkout">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="515" y="579" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="lane_customer" source="checkout" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;" target="db_process">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="lane_customer" source="db_process" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;" target="success_order">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="lane_customer" source="success_order" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;" target="transfer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_admin" parent="1" style="swimlane;startSize=30;fillColor=#f1f4f3;strokeColor=#006c47;strokeWidth=1.5;fontStyle=1;fontFamily=Helvetica;fontSize=13;fontColor=#006c47;rounded=1;arcSize=4;" value="Area Admin (CMS Backoffice)" vertex="1">
+          <mxGeometry height="910" width="440" x="770" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="admin_cms" parent="lane_admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#002547;strokeColor=#002547;fontColor=#ffffff;fontStyle=1;fontSize=12;" value="CMS Dashboard (/admin)&#xa;Ringkasan KPI &amp; Analitik Toko" vertex="1">
+          <mxGeometry height="48" width="240" x="100" y="116" as="geometry" />
+        </mxCell>
+        <mxCell id="admin_modules" parent="lane_admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#006c47;strokeWidth=1.2;fontColor=#181c1c;align=left;spacingLeft=12;fontSize=11;lineHeight=1.4;" value="Modul Backoffice Terpadu:&#xa;• Katalog Produk &amp; Varian/Stok&#xa;• Kategori Koleksi Pakaian&#xa;• Pelanggan &amp; Role Administrator&#xa;• Kupon Member &amp; Pengaturan Toko" vertex="1">
+          <mxGeometry height="85" width="240" x="100" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="admin_orders" parent="lane_admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#006c47;strokeWidth=1.2;fontColor=#181c1c;fontSize=12;" value="Kelola Pesanan &amp; Verifikasi&#xa;Cek Mutasi Transfer Bank Pelanggan" vertex="1">
+          <mxGeometry height="48" width="240" x="100" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="check_valid" parent="lane_admin" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#006c47;strokeWidth=1.5;fontColor=#006c47;fontStyle=1;fontSize=12;" value="Transfer&#xa;Valid?" vertex="1">
+          <mxGeometry height="65" width="130" x="155" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="order_cancel" parent="lane_admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fee2e2;strokeColor=#ef4444;strokeWidth=1.2;fontColor=#991b1b;fontSize=11;" value="Status: Cancelled&#xa;(Otomatis Kembalikan Stok)" vertex="1">
+          <mxGeometry height="46" width="170" x="20" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="order_process" parent="lane_admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#85f9bf;strokeColor=#006c47;strokeWidth=1.2;fontColor=#002547;fontStyle=1;fontSize=11;" value="Status: Processing&#xa;Sanitasi Ozon SirkulaCare" vertex="1">
+          <mxGeometry height="46" width="170" x="240" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="order_complete" parent="lane_admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#006c47;strokeColor=#006c47;fontColor=#ffffff;fontStyle=1;fontSize=12;" value="Pengiriman Kurir &amp; Selesai&#xa;Status: Completed" vertex="1">
+          <mxGeometry height="46" width="170" x="240" y="825" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="lane_admin" source="admin_cms" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#006c47;strokeWidth=1.5;" target="admin_modules">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="lane_admin" source="admin_modules" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#006c47;strokeWidth=1.5;" target="admin_orders">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="lane_admin" source="admin_orders" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#006c47;strokeWidth=1.5;" target="check_valid">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="lane_admin" source="check_valid" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#ef4444;strokeWidth=1.5;labelBackgroundColor=none;fontColor=#ef4444;fontStyle=1;fontSize=11;" target="order_cancel" value="Tidak Valid">
+          <mxGeometry relative="1" x="-0.1489" y="-13" as="geometry">
+            <mxPoint x="8" y="-12" as="offset" />
+            <Array as="points">
+              <mxPoint x="105" y="672" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="lane_admin" source="check_valid" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#006c47;strokeWidth=1.5;labelBackgroundColor=none;fontColor=#006c47;fontStyle=1;fontSize=11;" target="order_process" value="Valid">
+          <mxGeometry relative="1" x="-0.2558" y="13" as="geometry">
+            <mxPoint x="-8" y="-13" as="offset" />
+            <Array as="points">
+              <mxPoint x="325" y="672" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="lane_admin" source="order_process" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#006c47;strokeWidth=1.5;" target="order_complete">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="check_login" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#002547;strokeWidth=1.5;labelBackgroundColor=none;fontColor=#002547;fontStyle=1;fontSize=11;" target="admin_cms" value="Admin">
+          <mxGeometry relative="1" x="0.0163" y="-10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="350" y="90" />
+              <mxPoint x="990" y="90" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="transfer" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#006c47;strokeWidth=1.5;dashed=1;" target="admin_orders">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="750" y="789" />
+              <mxPoint x="750" y="609" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -75,6 +75,7 @@ $RECYCLE.BIN/
 *~lock~
 *.af~lock~
 ~$*
+/scratch/
 
 # Knowledge Graph & Local Tools
 graphify-out/

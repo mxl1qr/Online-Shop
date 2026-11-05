@@ -48,6 +48,10 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        if ($user->orders()->exists()) {
+            return back()->with('error', 'Akun tidak dapat dihapus karena memiliki riwayat transaksi/pesanan tercatat. Hubungi Customer Service jika ingin menutup akun.');
+        }
+
         Auth::logout();
 
         $user->delete();

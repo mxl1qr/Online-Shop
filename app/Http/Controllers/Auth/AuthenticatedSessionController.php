@@ -14,8 +14,26 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
+        if ($request->filled('redirect')) {
+            $request->session()->put('url.intended', $request->query('redirect'));
+        } elseif (!$request->session()->has('url.intended')) {
+            $previous = url()->previous();
+            $appUrl = rtrim(config('app.url'), '/');
+            $path = parse_url($previous, PHP_URL_PATH) ?? '/';
+            $authPaths = ['/login', '/register', '/logout', '/forgot-password', '/reset-password'];
+
+            if (
+                $previous
+                && (str_starts_with($previous, $appUrl) || str_starts_with($previous, $request->getSchemeAndHttpHost()))
+                && !in_array($path, $authPaths, true)
+                && !str_starts_with($path, '/admin')
+            ) {
+                $request->session()->put('url.intended', $previous);
+            }
+        }
+
         return view('auth.login');
     }
 
@@ -28,7 +46,23 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $intended = (string) $request->session()->get('url.intended', '');
+        $intendedPath = parse_url($intended, PHP_URL_PATH) ?? '';
+
+        if ($request->user() && $request->user()->isAdmin()) {
+            // Admin selalu diarahkan ke CMS Admin kecuali url.intended memang sub-halaman /admin/*
+            if (!str_starts_with($intendedPath, '/admin')) {
+                $request->session()->forget('url.intended');
+            }
+            return redirect()->intended(route('admin.orders.index', absolute: false));
+        }
+
+        // Customer tidak boleh diarahkan ke halaman /admin/* (mencegah 403 Akses Ditolak)
+        if (str_starts_with($intendedPath, '/admin')) {
+            $request->session()->forget('url.intended');
+        }
+
+        return redirect()->intended(route('products.index', absolute: false));
     }
 
     /**

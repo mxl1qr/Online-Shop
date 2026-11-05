@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,14 @@ class CartController extends Controller
             $total += $item['price'] * $item['quantity'];
         }
 
-        return view('cart.index', compact('cart', 'total'));
+        // Rekomendasi produk pelengkap ("Anda Mungkin Juga Menyukainya" ala Uniqlo & H&M)
+        $recommendedProducts = Product::with(['category', 'variants'])
+            ->where('is_active', true)
+            ->latest()
+            ->take(4)
+            ->get();
+
+        return view('cart.index', compact('cart', 'total', 'recommendedProducts'));
     }
 
     // 2. Logika add barang ke keranjang
@@ -58,6 +66,7 @@ class CartController extends Controller
             // Jika BELUM ADA, buat baris item baru di keranjang
             $cart[$variant->id] = [
                 'variant_id'   => $variant->id,
+                'product_id'   => $variant->product->id,
                 'product_name' => $variant->product->name,
                 'slug'         => $variant->product->slug,
                 'category'     => $variant->product->category->name,
@@ -71,7 +80,33 @@ class CartController extends Controller
         }
         // Simpan kembali array cart yang sudah diperbarui ke dalam Session
         session()->put('cart', $cart);
-        return redirect()->route('cart.index')->with('success', 'Baju berhasil ditambahkan ke keranjang!');
+
+        // Hitung ringkasan keranjang untuk Modal Konfirmasi Add-to-Cart ala Uniqlo
+        $cartTotal = 0;
+        $cartCount = 0;
+        foreach ($cart as $cItem) {
+            $cartTotal += $cItem['price'] * $cItem['quantity'];
+            $cartCount += $cItem['quantity'];
+        }
+
+        $addedModalData = [
+            'product_name' => $variant->product->name,
+            'image'        => $variant->product->image,
+            'color'        => $variant->color,
+            'size'         => $variant->size,
+            'price'        => $price,
+            'quantity'     => (int) $request->quantity,
+            'cart_total'   => $cartTotal,
+            'cart_count'   => $cartCount,
+        ];
+
+        if ($request->boolean('redirect_to_cart')) {
+            return redirect()->route('cart.index')->with('success', 'Baju berhasil ditambahkan ke keranjang!');
+        }
+
+        return back()
+            ->with('success', 'Produk berhasil ditambahkan ke keranjang Anda.')
+            ->with('added_to_cart', $addedModalData);
     }
     // 3. Mengubah jumlah barang (+ / -) langsung dari halaman keranjang
     public function update(Request $request, $variantId)

@@ -71,6 +71,28 @@ class ProductController extends Controller
             ->take(4)
             ->get();
 
+        if ($relatedProducts->count() < 4) {
+            $excludeIds = $relatedProducts->pluck('id')->push($product->id)->all();
+            $fallbackProducts = Product::with(['category', 'variants'])
+                ->whereNotIn('id', $excludeIds)
+                ->where('is_active', true)
+                ->take(4 - $relatedProducts->count())
+                ->get();
+            $relatedProducts = $relatedProducts->concat($fallbackProducts);
+        }
+
         return view('products.show', compact('product', 'relatedProducts', 'categories'));
+    }
+
+    // Menampilkan halaman Daftar Favorit / Wishlist (Bisa diakses Guest & Member ala H&M)
+    public function wishlist()
+    {
+        $categories = Category::all();
+        $products = Product::with(['category', 'variants'])
+            ->where('is_active', true)
+            ->latest()
+            ->get();
+
+        return view('wishlist.index', compact('products', 'categories'));
     }
 }

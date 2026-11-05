@@ -40,6 +40,11 @@ class DatabaseSeeder extends Seeder
         $jacket = Category::updateOrCreate(['slug' => 'outerwear-jaket'], ['name' => 'Outerwear & Jaket']);
         $pants  = Category::updateOrCreate(['slug' => 'celana-bawahan'], ['name' => 'Celana & Bawahan']);
 
+        // Bersihkan kategori lama yang sudah digabung ke outerwear-jaket
+        Product::whereHas('category', fn ($q) => $q->where('slug', 'hoodie-jaket'))
+            ->update(['category_id' => $jacket->id]);
+        Category::whereNotIn('slug', ['kaos-t-shirt', 'kemeja', 'outerwear-jaket', 'celana-bawahan'])->delete();
+
         // 4. Data Produk Pakaian Sirkula Terkurasi
 
         // Produk 1: Heavyweight Boxy T-Shirt

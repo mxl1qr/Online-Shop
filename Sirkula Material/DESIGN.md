@@ -55,7 +55,7 @@ typography:
     fontWeight: '700'
     lineHeight: '1.2'
   body-md:
-    fontFamily: Montserrat
+    fontFamily: Inter
     fontSize: 16px
     fontWeight: '400'
     lineHeight: '1.5'
@@ -91,7 +91,7 @@ The brand identity is rooted in reliability and high-performance precision. It t
 Our palette is led by a deep, authoritative Primary Navy (#002547) which provides a strong foundation for professional applications. This is accented by a refined Secondary Emerald (#009463) for highlights and call-to-actions, offering a more grounded and mature professional feel. The Tertiary Gold (#ffda6c) is used sparingly for alerts or to draw attention to critical data points with a softer, sophisticated glow. The Neutral background (#f4f7f6) is a very soft, cool-toned grey that reduces eye strain and provides a clean canvas for the high-contrast primary elements.
 
 ## Typography
-The system uses a sophisticated trio of typefaces. **Plus Jakarta Sans** is used for headlines to provide a modern, geometric look that remains highly legible. **Montserrat** is the primary typeface for body text, offering a clean and familiar reading experience. **Inter** is utilized for labels and technical data, providing a clean, modern, and highly legible aesthetic that maintains clarity even at small scales.
+The system uses a focused duo of typefaces. **Plus Jakarta Sans** is used for headlines to provide a modern, geometric look that remains highly legible. **Inter** is the primary typeface for both body text and technical labels, providing a clean, modern, and highly legible aesthetic that maintains clarity across all scales.
 
 ## Layout & Spacing
 The layout follows a precise 8px grid system. This rhythmic approach ensures vertical and horizontal consistency across all views. We utilize a fluid grid system for main content areas with 16px gutters and 24px margins, allowing the interface to scale gracefully across different screen sizes while maintaining a professional density of information.

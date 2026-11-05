@@ -49,11 +49,17 @@ class CheckoutController extends Controller
             'payment_method'   => 'required|string',
         ]);
 
-        // Hitung total harga
-        $totalAmount = 0;
+        // Hitung subtotal harga pakaian
+        $subtotal = 0;
         foreach ($cart as $item) {
-            $totalAmount += $item['price'] * $item['quantity'];
+            $subtotal += $item['price'] * $item['quantity'];
         }
+
+        // Hitung ongkir berdasarkan ambang batas konfigurasi toko (Default: Rp 250.000)
+        $storeConfig = AdminOrderController::getStoreConfig();
+        $threshold = (int) ($storeConfig['free_shipping_threshold'] ?? 250000);
+        $shippingCost = $subtotal >= $threshold ? 0 : 20000;
+        $totalAmount = $subtotal + $shippingCost;
 
         // BUNGKUS DENGAN DB::transaction AGAR AMAN DARI RACE CONDITION & ERROR
         try {
@@ -115,7 +121,13 @@ class CheckoutController extends Controller
     // 3. Halaman Konfirmasi Pesanan & Instruksi Transfer Bank
     public function success($orderNumber)
     {
-        $order = Order::with('items')->where('order_number', $orderNumber)->firstOrFail();
+        $order = Order::with(['items.product', 'items.variant'])->where('order_number', $orderNumber)->firstOrFail();
+
+        // Proteksi Otorisasi IDOR: pastikan order milik user yang login atau admin
+        if ($order->user_id !== Auth::id() && !Auth::user()->isAdmin()) {
+            abort(403, 'Akses Ditolak: Anda tidak memiliki akses ke rincian pesanan ini.');
+        }
+
         return view('checkout.success', compact('order'));
     }
 }

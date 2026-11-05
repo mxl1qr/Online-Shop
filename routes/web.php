@@ -5,8 +5,13 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +20,7 @@ use App\Http\Controllers\ProfileController;
 */
 Route::get('/', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/wishlist', [ProductController::class, 'wishlist'])->name('wishlist.index');
 
 /*
 |--------------------------------------------------------------------------
@@ -32,10 +38,23 @@ Route::delete('/cart/remove/{variantId}', [CartController::class, 'remove'])->na
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
-    // Dashboard & Profil Bawaan Breeze
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware('verified')->name('dashboard');
+    // Dashboard Member Sirkula (Ala Uniqlo /member & /dashboard)
+    // Jika Admin mengakses /dashboard atau /member tanpa ?preview_member=1, arahkan ke CMS Admin
+    $memberHandler = function (\Illuminate\Http\Request $request) {
+        if (\Illuminate\Support\Facades\Auth::user()->isAdmin() && !$request->boolean('preview_member')) {
+            return redirect()->route('admin.orders.index');
+        }
+
+        $allOrders = \Illuminate\Support\Facades\Auth::user()->orders()
+            ->with(['items.product', 'items.variant'])
+            ->latest()
+            ->get();
+        $recentOrders = $allOrders->take(5);
+        return view('dashboard', compact('recentOrders', 'allOrders'));
+    };
+
+    Route::get('/dashboard', $memberHandler)->middleware('verified')->name('dashboard');
+    Route::get('/member', $memberHandler)->name('member');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -53,12 +72,45 @@ Route::middleware(['auth'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| 4. Route Area Administrator (Wajib Login + Role Admin)
+| 4. Route Area Administrator / Full CMS Panel (Wajib Login + Role Admin)
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Ringkasan Eksekutif & Analitik
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index']);
+
+    // Pesanan & Logistik Pengiriman
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::patch('/orders/{id}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    Route::delete('/orders/{id}', [AdminOrderController::class, 'destroyOrder'])->name('orders.destroy');
+
+    // Produk & Varian/Stok CRUD
+    Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
+    Route::post('/products', [AdminProductController::class, 'store'])->name('products.store');
+    Route::put('/products/{id}', [AdminProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{id}', [AdminProductController::class, 'destroy'])->name('products.destroy');
+    Route::post('/products/{productId}/variants', [AdminProductController::class, 'storeVariant'])->name('variants.store');
+    Route::patch('/variants/{id}', [AdminProductController::class, 'updateVariant'])->name('variants.update');
+    Route::delete('/variants/{id}', [AdminProductController::class, 'destroyVariant'])->name('variants.destroy');
+
+    // Kategori Koleksi CRUD
+    Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
+    Route::post('/categories', [AdminCategoryController::class, 'store'])->name('categories.store');
+    Route::patch('/categories/{id}', [AdminCategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{id}', [AdminCategoryController::class, 'destroy'])->name('categories.destroy');
+
+    // Pelanggan & Hak Akses CRUD
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+    Route::patch('/users/{id}', [AdminUserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+
+    // Pengaturan Toko, Kupon & Ekspor Laporan CSV
+    Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
+    Route::post('/firebase/snapshot', [AdminSettingController::class, 'generateFirebaseSnapshot'])->name('firebase.snapshot');
+    Route::get('/export/{type}', [AdminDashboardController::class, 'exportCsv'])->name('export');
 });
 
 // Route Autentikasi (Breeze)

@@ -27,7 +27,35 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $response->assertRedirect(route('products.index', absolute: false));
+    }
+
+    public function test_users_redirect_to_intended_or_previous_page_after_login(): void
+    {
+        $user = User::factory()->create();
+
+        $this->from('/wishlist')->get('/login');
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect('/wishlist');
+    }
+
+    public function test_admins_redirect_to_admin_cms_after_login(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        $response = $this->post('/login', [
+            'email' => $admin->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(route('admin.orders.index', absolute: false));
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void

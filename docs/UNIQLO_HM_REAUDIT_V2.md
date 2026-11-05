@@ -308,3 +308,42 @@ Distribusi ukuran font Sirkula (homepage desktop, ~125 elemen teks daun):
 15. Rating/review dan badge Baru/Sale/Limited 11-12px, tonal (#006c47 Baru, #002547 Sale).
 
 *Screenshot full-page Uniqlo: C:/Users/Maliq/.gemini/antigravity-cli/brain/bae31990-2336-4eef-8453-be9555852e1f/.system_generated/steps/26/media_0.jpg*
+
+
+---
+
+## Bagian 9. Scan E2E Buyer Journey (Alur Pembelian Lengkap — 2026-10-22)
+
+### Step 1 — Search & Discovery Interaktif
+- **Uniqlo ID**: Klik search membuka flyout `1366x577`, input `825x34` (16px, placeholder *"Apa yang Anda cari?"*). Menampilkan chip **Trending** (`36px` tinggi, pill `rounded-full`, teks `13.3px`: *Flannel, Knit, Fleece, Winter Travel, Koleksi Celana*), **Riwayat Pencarian**, serta CTA *"CARI BERDASARKAN KATEGORI"* (`480x52` pill).
+- **H&M ID**: Klik ikon search (`48x48`) membuka panel samping `477x577`, input `397x56`. Saat mengetik muncul `.live-search-autocomplete` (`445x414`) berlabel *"PRODUCT SUGGESTIONS"* berisi baris produk `429x106` (thumbnail `70x106` rasio 2:3, nama uppercase 12px, harga diskon merah & harga coret).
+
+### Step 2 — PLP & Filter Aktif
+- **H&M ID** (`/ladies/clothing/tops.html`, tinggi `7.006px`): Kartu `.ds-sdk-product-item` `338x589px` (4 kolom), gambar `338x507` (2:3), navigasi prev/next `24x60`, ikon wishlist, strip swatch `338x17`. Toolbar *"URUT BERDASARKAN"* (`178x32`) dan *"SEMUA FILTER"* (`114x32`). Pagination tombol *"HALAMAN BERIKUTNYA"* (`454x57` hitam).
+- **Uniqlo ID** (`/women/tops`): Tombol Filter membuka drawer kanan `520px` berisi grup accordion `473x52`. Saat filter dipilih, muncul blok **"Filter Aktif"** dengan chip filter, tombol *"Hapus semua"*, dan CTA bawah *"LIHAT PRODUK (n)"* (`488x52` hitam).
+
+### Step 3 — PDP & Konfirmasi Add-to-Cart
+- **H&M ID PDP** (tinggi `6.582px`):
+  - Galeri grid 2 kolom foto besar `676x1013` (2:3) + foto detail `338x507` + fitur **Zoom penuh `1336x1919`**.
+  - Buy box kanan lebar `458px`: h1 `16px/600` uppercase, swatch warna `12x24`, grid ukuran 4 kolom `115x56` per opsi, label stok tipis *"TINGGAL BEBERAPA ITEM LAGI"*, link *"PANDUAN UKURAN"*.
+  - CTA *"MASUKKAN KE KERANJANG"* (`394x56` hitam) bersisian dengan tombol **"BAGIKAN" (`56x56` putih)**.
+  - 4 Accordion (`458x48`): *DESKRIPSI & FIT, BAHAN & PEMASOK, PANDUAN PERAWATAN, PENGIRIMAN DAN PENGEMBALIAN*.
+  - Rekomendasi *"ANDA MUNGKIN JUGA MENYUKAINYA"* di bawah.
+- **Uniqlo ID Add-to-Cart Modal** (`776x478` di tengah layar):
+  - Header `60px`: **"Produk ditambahkan ke keranjang Anda"**.
+  - Isi: *"Total pesanan: 1 produk Rp199.000"*, progress ongkir *"Belanjakan Rp500.000 lagi untuk pengiriman gratis."*, serta rekomendasi *"Frequently Bought Together"*.
+  - Footer `84px`: 2 tombol berdampingan **"LIHAT KERANJANG"** (utama) dan **"LANJUT BELANJA"** (outline).
+
+### Step 4 — Keranjang Belanja Terisi (Populated Cart)
+- **Uniqlo ID (`/cart`)** — 2 Kolom:
+  - Kiri: Thumbnail `152x203` (3:4), tombol favorit `44x44`, qty stepper `41x44` (`-`/`+`), tombol *"Hapus"*, info warna & ukuran, badge *"Dibuat dari Bahan Daur Ulang"*, subtotal item.
+  - Kanan (`376px`): *"Ringkasan pesanan"*, subtotal, pengiriman, *"Termasuk PPN"*, tombol *"Gunakan kupon"* (`376x52`), info sisa nominal gratis ongkir, CTA *"LANJUTKAN KE PEMBAYARAN"* (`376x52`), micro-copy reservasi 30 menit.
+- **H&M ID (`/checkout/cart/`)** — 2 Kolom:
+  - Kiri: Thumbnail `128x192` (2:3), nama uppercase 12px, warna, ukuran, total, qty input `130x56`.
+  - Kanan (`393px`): Banner *"Selamat! Anda mendapatkan ongkir GRATIS."*, bagian *"VOUCHER DAN DISKON"*, total pesanan, CTA *"LANJUT KE PEMBAYARAN"* (`393x56`), micro-copy enkripsi data & garansi retur, 6 badge metode pembayaran, serta rail *"ANDA MUNGKIN JUGA MENYUKAINYA"* di bawah keranjang.
+
+### Step 5 — Halaman Wishlist (`/wishlist`)
+- **H&M ID (`/wishlist/`)**: Dapat diakses tanpa login (guest menggunakan localStorage). Judul *"FAVORIT"* (`32px/700`), empty state *"SIMPAN ITEM FAVORIT ANDA"*, CTA *"CARI SEKARANG"* (`335x56` outline), disertai rail produk rekomendasi di bawahnya.
+
+### Step 6 — Gerbang Checkout (Login Gate)
+- **Uniqlo & H&M**: Menampilkan form login berdampingan dengan blok pendaftaran pelanggan baru yang menonjolkan **3 poin keuntungan member** (Gratis ongkir, garansi penukaran, voucer/diskon member).
