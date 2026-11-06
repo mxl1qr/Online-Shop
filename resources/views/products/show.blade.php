@@ -95,21 +95,21 @@
         <span class="hidden md:inline">Gratis Ongkir ke Seluruh Indonesia min. Rp250.000</span>
     </div>
 
-    <!-- 2. Main Navigation Bar (3 Pilar Presisi 64px + Hover Mega Menu) -->
+    <!-- 2. Main Navigation Bar (3 Pilar Presisi 56px + Hover Mega Menu) -->
     <header class="sticky top-0 z-50 bg-white border-b border-line relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 gap-3 lg:gap-6">
+            <div class="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-6">
                 
                 <!-- PILAR 1: KIRI (Hamburger Mobile + Logo Asli Sirkula) -->
-                <div class="flex items-center gap-2.5 shrink-0" @mouseenter="activeMegaMenu = null">
+                <div class="flex items-center gap-2 sm:gap-3 shrink-0" @mouseenter="activeMegaMenu = null">
                     <button type="button"
                             @click="mobileMenuOpen = !mobileMenuOpen"
-                            class="lg:hidden w-10 h-10 -ml-1 rounded-lg flex items-center justify-center text-navy hover:bg-surface-low transition"
+                            class="lg:hidden w-10 h-10 rounded-lg flex items-center justify-center text-navy hover:bg-surface-low transition cursor-pointer"
                             aria-label="Buka Menu Navigasi">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
-                    <a href="{{ route('products.index') }}" class="group shrink-0">
-                        @include('partials.brand-logo')
+                    <a href="{{ route('products.index') }}" class="group shrink-0 flex items-center">
+                        @include('partials.brand-logo', ['size' => 'sm'])
                     </a>
                 </div>
 
@@ -428,12 +428,12 @@
                             </div>
                         </div>
 
-                        <!-- Baris Tombol CTA Utama (Solid Navy + Wishlist 52x52 + Share 52x52 ala H&M & Uniqlo PDP) -->
+                        <!-- Baris Tombol CTA Utama (Solid Navy 52px + Wishlist 52px + Share 52px Sejajar Sempurna) -->
                         <div class="flex items-center gap-2.5">
                             <button type="submit" 
                                     :disabled="currentStock <= 0"
-                                    :class="currentStock > 0 ? 'bg-navy hover:bg-navy-600 text-white cursor-pointer' : 'bg-line text-muted cursor-not-allowed'"
-                                    class="flex-1 h-12 rounded-xl flex items-center justify-center font-label text-sm font-semibold transition">
+                                    :class="currentStock > 0 ? 'bg-navy hover:bg-navy-600 text-white cursor-pointer active:scale-[0.98]' : 'bg-line text-muted cursor-not-allowed'"
+                                    class="flex-1 h-[52px] rounded-xl flex items-center justify-center font-label text-sm font-bold transition select-none shadow-xs">
                                 <span x-show="currentStock > 0">+ Tambah ke Keranjang</span>
                                 <span x-show="currentStock <= 0">Varian Ini Sedang Habis</span>
                             </button>
@@ -442,7 +442,7 @@
                             <button type="button"
                                     @click="toggleWishlist({{ $product->id }})"
                                     :title="isWishlisted({{ $product->id }}) ? 'Hapus dari Favorit' : 'Simpan ke Favorit'"
-                                    class="w-[52px] h-[52px] rounded-xl border border-line-strong hover:border-navy bg-white flex items-center justify-center transition shrink-0">
+                                    class="w-[52px] h-[52px] rounded-xl border border-line-strong hover:border-navy bg-white flex items-center justify-center transition shrink-0 select-none cursor-pointer active:scale-95">
                                 <svg class="w-5 h-5 transition"
                                      :class="isWishlisted({{ $product->id }}) ? 'text-red-600 fill-current' : 'text-ink fill-none'"
                                      stroke="currentColor" viewBox="0 0 24 24">
@@ -450,11 +450,11 @@
                                 </svg>
                             </button>
 
-                            <!-- Tombol Bagikan / Share (52x52 ala H&M PDP) -->
+                            <!-- Tombol Bagikan / Share (52x52) -->
                             <button type="button"
                                     @click="navigator.clipboard.writeText(window.location.href); shareToast = true; setTimeout(() => shareToast = false, 2500)"
                                     title="Bagikan Produk Ini"
-                                    class="w-[52px] h-[52px] rounded-xl border border-line-strong hover:border-navy bg-white flex items-center justify-center text-ink hover:text-navy transition shrink-0">
+                                    class="w-[52px] h-[52px] rounded-xl border border-line-strong hover:border-navy bg-white flex items-center justify-center text-ink hover:text-navy transition shrink-0 select-none cursor-pointer active:scale-95">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
                             </button>
                         </div>
@@ -742,7 +742,7 @@
             <button type="submit" 
                     :disabled="currentStock <= 0"
                     :class="currentStock > 0 ? 'bg-navy text-white' : 'bg-gray-300 text-gray-500'"
-                    class="w-full h-11 flex items-center justify-center font-label text-sm font-bold">
+                    class="w-full h-11 rounded-xl flex items-center justify-center font-label text-sm font-bold select-none cursor-pointer active:scale-95 transition">
                 <span x-show="currentStock > 0">+ Keranjang</span>
                 <span x-show="currentStock <= 0">Habis</span>
             </button>

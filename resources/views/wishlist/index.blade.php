@@ -42,10 +42,10 @@
               return this.wishlist.includes(id);
           }
       }"
-      class="bg-surface text-ink antialiased font-body selection:bg-navy selection:text-white pb-16 md:pb-0">
+      class="bg-surface text-ink antialiased font-body selection:bg-navy selection:text-white">
 
     <!-- 1. Top Announcement Bar -->
-    <div class="bg-navy text-white text-xs py-2 px-4 text-center font-label font-medium tracking-wide">
+    <div class="bg-navy text-white text-[11px] sm:text-xs py-2 px-4 text-center font-label font-medium tracking-wide">
         <div class="max-w-7xl mx-auto flex items-center justify-center space-x-3">
             <span class="inline-flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 text-emerald-soft" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -56,21 +56,21 @@
         </div>
     </div>
 
-    <!-- 2. Main Navigation Bar (3 Pilar Presisi 64px + Hover Mega Menu) -->
+    <!-- 2. Main Navigation Bar (3 Pilar Presisi 56px Symmetrical) -->
     <header class="sticky top-0 z-50 bg-white border-b border-line relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 gap-3 lg:gap-6">
+            <div class="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-6">
                 
                 <!-- PILAR 1: KIRI (Hamburger Mobile + Logo Asli Sirkula) -->
-                <div class="flex items-center gap-2.5 shrink-0" @mouseenter="activeMegaMenu = null">
+                <div class="flex items-center gap-2 sm:gap-3 shrink-0" @mouseenter="activeMegaMenu = null">
                     <button type="button"
                             @click="mobileMenuOpen = !mobileMenuOpen"
-                            class="lg:hidden w-10 h-10 -ml-1 rounded-lg flex items-center justify-center text-navy hover:bg-surface-low transition"
+                            class="lg:hidden w-10 h-10 rounded-lg flex items-center justify-center text-navy hover:bg-surface-low transition cursor-pointer"
                             aria-label="Buka Menu Navigasi">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
-                    <a href="{{ route('products.index') }}" class="group shrink-0">
-                        @include('partials.brand-logo')
+                    <a href="{{ route('products.index') }}" class="group shrink-0 flex items-center">
+                        @include('partials.brand-logo', ['size' => 'sm'])
                     </a>
                 </div>
 
@@ -356,31 +356,6 @@
         </section>
 
     </main>
-
-    <!-- MOBILE FIXED BOTTOM NAVIGATION BAR (56px) -->
-    <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-line h-14 flex items-center justify-around px-2 font-label text-sm font-semibold text-muted">
-        <a href="{{ route('products.index') }}" class="flex flex-col items-center justify-center flex-1 h-full">
-            <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-            <span>Beranda</span>
-        </a>
-        <a href="{{ route('products.index') }}#katalog" class="flex flex-col items-center justify-center flex-1 h-full">
-            <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-            <span>Koleksi</span>
-        </a>
-        <a href="{{ route('wishlist.index') }}" class="flex flex-col items-center justify-center flex-1 h-full relative text-navy font-bold">
-            <svg class="w-5 h-5 mb-0.5 text-red-600 fill-current" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-            <span>Wishlist</span>
-            <span x-show="wishlist.length > 0" x-text="wishlist.length" class="absolute top-1 right-5 w-3.5 h-3.5 bg-emerald text-white text-xs font-bold rounded-full flex items-center justify-center"></span>
-        </a>
-        <a href="{{ route('cart.index') }}" class="flex flex-col items-center justify-center flex-1 h-full relative">
-            <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-            <span>Keranjang</span>
-        </a>
-        <a href="{{ route('member') }}" class="flex flex-col items-center justify-center flex-1 h-full">
-            <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-            <span>Member</span>
-        </a>
-    </nav>
 
 </body>
 </html>

@@ -33,8 +33,8 @@
       }"
       class="bg-white text-[#1b1b1b] antialiased font-label min-h-screen flex flex-col selection:bg-navy selection:text-white">
 
-    <!-- 1. Simplified Member Header (Persis Uniqlo /id/id/member: 64px Putih, Border #dadada, Logo Kiri + Ikon Member Kanan) -->
-    <header class="sticky top-0 z-40 bg-white border-b border-line h-16">
+    <!-- 1. Simplified Member Header (Persis Uniqlo /id/id/member: 56px Putih, Border #dadada, Logo Kiri + Ikon Member Kanan) -->
+    <header class="sticky top-0 z-40 bg-white border-b border-line h-14 sm:h-16">
         <div class="max-w-[1200px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
             <!-- Kiri: Logo Sirkula -->
             <a href="{{ route('products.index') }}" class="flex items-center shrink-0" title="Beranda Sirkula">
@@ -92,15 +92,15 @@
             <!-- Main Content Column (span 8 pada Desktop = 773px, rata kiri seperti Uniqlo) -->
             <div class="lg:col-span-8">
                 
-                <!-- A. Kartu Barcode Keanggotaan (Kotak Putih border #dadada padding 24px) -->
-                <div class="bg-white border border-line rounded-xl p-6 mb-8 flex flex-col items-center justify-center text-center">
+                <!-- A. Kartu Barcode Keanggotaan (Kotak Putih border #dadada padding responsif) -->
+                <div class="bg-white border border-line rounded-xl p-4 sm:p-6 mb-6 sm:mb-8 flex flex-col items-center justify-center text-center">
                     <h2 class="text-[20px] sm:text-[22px] font-normal leading-[1.2] text-black mb-4">
                         Barcode keanggotaan
                     </h2>
 
                     <!-- Gambar Barcode Code-128 + 13 Digit Numeric ID -->
-                    <div class="flex flex-col items-center justify-center py-1">
-                        <svg class="w-[196px] h-[56px] text-black" viewBox="0 0 220 56" fill="currentColor" aria-label="Barcode keanggotaan">
+                    <div class="flex flex-col items-center justify-center py-1 w-full">
+                        <svg class="w-full max-w-[196px] h-[50px] sm:h-[56px] text-black" viewBox="0 0 220 56" fill="currentColor" aria-label="Barcode keanggotaan">
                             <rect x="4" y="0" width="3" height="56"/><rect x="10" y="0" width="1.5" height="56"/><rect x="15" y="0" width="4" height="56"/><rect x="22" y="0" width="2" height="56"/><rect x="27" y="0" width="1.5" height="56"/><rect x="32" y="0" width="5" height="56"/><rect x="40" y="0" width="2" height="56"/><rect x="45" y="0" width="3" height="56"/><rect x="51" y="0" width="1.5" height="56"/><rect x="56" y="0" width="4" height="56"/><rect x="63" y="0" width="2" height="56"/><rect x="68" y="0" width="3.5" height="56"/><rect x="75" y="0" width="1.5" height="56"/><rect x="80" y="0" width="5" height="56"/><rect x="88" y="0" width="2" height="56"/><rect x="93" y="0" width="1.5" height="56"/><rect x="98" y="0" width="4" height="56"/><rect x="105" y="0" width="3" height="56"/><rect x="111" y="0" width="1.5" height="56"/><rect x="116" y="0" width="4.5" height="56"/><rect x="124" y="0" width="2" height="56"/><rect x="129" y="0" width="3" height="56"/><rect x="135" y="0" width="1.5" height="56"/><rect x="140" y="0" width="5" height="56"/><rect x="148" y="0" width="2" height="56"/><rect x="153" y="0" width="3" height="56"/><rect x="159" y="0" width="1.5" height="56"/><rect x="164" y="0" width="4" height="56"/><rect x="171" y="0" width="2" height="56"/><rect x="176" y="0" width="3.5" height="56"/><rect x="183" y="0" width="1.5" height="56"/><rect x="188" y="0" width="4" height="56"/><rect x="195" y="0" width="2" height="56"/><rect x="200" y="0" width="5" height="56"/><rect x="208" y="0" width="1.5" height="56"/><rect x="213" y="0" width="3" height="56"/>
                         </svg>
                         <span class="font-mono text-[13px] tracking-[0.18em] text-black mt-1.5">
@@ -223,8 +223,18 @@
         <!-- ========================================================================= -->
         <div x-show="page !== 'hub'" x-cloak class="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-2">
             
-            <!-- Left Sidebar Navigation (span 3 pada Desktop — Persis Sub-Halaman Uniqlo) -->
-            <nav class="lg:col-span-3 space-y-8 border-b lg:border-b-0 border-line pb-6 lg:pb-0">
+            <!-- Mobile Return Action (Persis Uniqlo Mobile Sub-Page UX: Akses Langsung Tanpa Tertimbun Sidebar) -->
+            <div class="lg:hidden col-span-12 -mt-2 mb-1">
+                <button type="button" 
+                        @click="page = 'hub'; window.scrollTo({top: 0, behavior: 'smooth'})"
+                        class="inline-flex items-center gap-2 text-sm font-semibold text-black hover:opacity-70 transition cursor-pointer py-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    <span>Kembali ke Keanggotaan</span>
+                </button>
+            </div>
+
+            <!-- Left Sidebar Navigation (span 3 pada Desktop — Disembunyikan di Mobile ala Uniqlo) -->
+            <nav class="hidden lg:block lg:col-span-3 space-y-8 border-b lg:border-b-0 border-line pb-6 lg:pb-0">
                 <div>
                     <h2 class="text-[20px] font-normal text-black mb-3">Keanggotaan</h2>
                     <ul class="space-y-2.5 text-[14px]">
@@ -803,7 +813,7 @@
         </div>
         <hr class="border-line">
         <div class="max-w-[1200px] mx-auto px-4 sm:px-6 py-4 text-[12px] text-[#7d7d7d]">
-            Hak Cipta &copy; {{ date('Y') }} PT SIRKULASISI INDONESIA LESTARI. Semua hak dilindungi undang-undang.
+            Hak Cipta &copy; {{ date('Y') }} PT SIRKULASI INDONESIA LESTARI. Semua hak dilindungi undang-undang.
         </div>
     </footer>
 

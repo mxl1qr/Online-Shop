@@ -32,7 +32,7 @@
       class="bg-surface text-ink antialiased font-body selection:bg-navy selection:text-white">
 
     <!-- 1. Top Announcement Bar -->
-    <div class="bg-navy text-white text-xs py-2 px-4 text-center font-label font-medium tracking-wide flex items-center justify-center space-x-3">
+    <div class="bg-navy text-white text-[11px] sm:text-xs py-2 px-4 text-center font-label font-medium tracking-wide flex items-center justify-center gap-2 sm:gap-3">
         <span class="inline-flex items-center gap-1.5">
             <svg class="w-3.5 h-3.5 text-emerald-soft" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             100% Terkurasi &amp; Higienis (Sanitized)
@@ -43,18 +43,18 @@
         <span class="hidden md:inline">Gratis Ongkir ke Seluruh Indonesia min. Rp250.000</span>
     </div>
 
-    <!-- 2. Main Navigation Bar (3 Pilar Presisi 64px Tanpa Wrapping) -->
+    <!-- 2. Main Navigation Bar (3 Pilar Presisi 56px Symmetrical) -->
     <header class="sticky top-0 z-50 bg-white border-b border-line">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 gap-3 lg:gap-6">
+            <div class="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-6">
                 
                 <!-- PILAR 1: KIRI (Logo Brand Sirkula) -->
-                <div class="flex items-center gap-2.5 shrink-0">
-                    <a href="{{ route('products.index') }}" class="lg:hidden w-10 h-10 -ml-1 flex items-center justify-center text-navy hover:bg-surface-low rounded-lg transition" title="Kembali ke Katalog">
+                <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
+                    <a href="{{ route('products.index') }}" class="lg:hidden w-10 h-10 flex items-center justify-center text-navy hover:bg-surface-low rounded-lg transition" title="Kembali ke Katalog">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                     </a>
-                    <a href="{{ route('products.index') }}" class="flex items-center gap-2.5 group shrink-0">
-                        @include('partials.brand-logo', ['size' => 'md'])
+                    <a href="{{ route('products.index') }}" class="flex items-center gap-2 group shrink-0">
+                        @include('partials.brand-logo', ['size' => 'sm'])
                     </a>
                 </div>
 
@@ -164,12 +164,12 @@
                 <!-- KOLOM KIRI: Daftar Pakaian di Keranjang -->
                 <div class="lg:col-span-8 space-y-4">
                     @foreach($cart as $variantId => $item)
-                        <div class="bg-white border border-line rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center justify-between">
+                        <div class="bg-white border border-line rounded-xl p-3 sm:p-5 flex flex-col sm:flex-row gap-3.5 sm:gap-6 items-start sm:items-center justify-between">
                             
                             <!-- Foto & Informasi Barang (Thumbnail 3:4 ala Uniqlo 152x203) -->
-                            <div class="flex items-start space-x-4">
+                            <div class="flex items-start space-x-3 sm:space-x-4 w-full sm:w-auto">
                                 <a href="{{ route('products.show', $item['slug']) }}" 
-                                   class="w-24 h-32 bg-canvas shrink-0 border border-line rounded-lg overflow-hidden flex items-center justify-center">
+                                   class="w-20 h-28 sm:w-24 sm:h-32 bg-canvas shrink-0 border border-line rounded-lg overflow-hidden flex items-center justify-center">
                                     @if($item['image'])
                                         <img src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['product_name'] }}" class="w-full h-full object-cover">
                                     @else
@@ -177,82 +177,87 @@
                                     @endif
                                 </a>
 
-                                <div>
-                                    <span class="font-label text-sm text-emerald font-bold block mb-0.5">
+                                <div class="flex-1 min-w-0">
+                                    <span class="font-label text-xs sm:text-sm text-emerald font-bold block mb-0.5 truncate">
                                         {{ $item['category'] }} &bull; Grade A+ Sanitized
                                     </span>
-                                    <h3 class="font-headline text-sm sm:text-base font-bold text-ink leading-snug">
+                                    <h3 class="font-headline text-[13px] sm:text-base font-bold text-ink leading-snug line-clamp-2">
                                         <a href="{{ route('products.show', $item['slug']) }}" class="hover:text-navy transition">
                                             {{ $item['product_name'] }}
                                         </a>
                                     </h3>
                                     
                                     <!-- Rincian Varian -->
-                                    <div class="mt-1.5 flex items-center space-x-2 font-label text-sm text-muted">
+                                    <div class="mt-1 flex items-center space-x-2 font-label text-xs sm:text-sm text-muted">
                                         <span>Warna: <strong class="text-navy">{{ $item['color'] }}</strong></span>
                                         <span>&bull;</span>
                                         <span>Ukuran: <strong class="text-navy">{{ $item['size'] }}</strong></span>
                                     </div>
 
                                     <!-- Harga Satuan -->
-                                    <p class="font-label text-sm font-bold text-navy mt-2">
+                                    <p class="font-label text-[13px] sm:text-sm font-bold text-navy mt-1.5">
                                         Rp {{ number_format($item['price'], 0, ',', '.') }} / pcs
                                     </p>
                                 </div>
                             </div>
 
-                            <!-- Qty Controller (Stepper 41x44 ala Uniqlo), Wishlist 44x44 & Total Per Item -->
-                            <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-5 pt-3 sm:pt-0 border-t sm:border-t-0 border-line">
+                            <!-- Qty Controller (Stepper), Wishlist & Total Per Item -->
+                            <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-2 sm:gap-4 pt-3 sm:pt-0 border-t sm:border-t-0 border-line">
                                 
-                                <!-- Tombol Simpan ke Favorit di Baris Cart (44x44 ala Uniqlo /cart) -->
-                                @if(!empty($item['product_id']))
-                                    <button type="button"
-                                            @click="toggleWishlist({{ $item['product_id'] }})"
-                                            :title="isWishlisted({{ $item['product_id'] }}) ? 'Tersimpan di Favorit' : 'Simpan ke Favorit'"
-                                            class="w-11 h-11 border border-line rounded-lg hover:border-navy flex items-center justify-center transition">
-                                        <svg class="w-4 h-4 transition"
-                                             :class="isWishlisted({{ $item['product_id'] }}) ? 'text-red-600 fill-current' : 'text-muted fill-none'"
-                                             stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                        </svg>
-                                    </button>
-                                @endif
+                                <div class="flex items-center gap-2">
+                                    <!-- Tombol Simpan ke Favorit di Baris Cart (ala Uniqlo /cart) -->
+                                    @if(!empty($item['product_id']))
+                                        <button type="button"
+                                                @click="toggleWishlist({{ $item['product_id'] }})"
+                                                :title="isWishlisted({{ $item['product_id'] }}) ? 'Tersimpan di Favorit' : 'Simpan ke Favorit'"
+                                                class="w-9 h-9 sm:w-11 sm:h-11 border border-line rounded-lg hover:border-navy flex items-center justify-center transition shrink-0 cursor-pointer">
+                                            <svg class="w-4 h-4 transition"
+                                                 :class="isWishlisted({{ $item['product_id'] }}) ? 'text-red-600 fill-current' : 'text-muted fill-none'"
+                                                 stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                            </svg>
+                                        </button>
+                                    @endif
 
-                                <!-- Form Update Kuantitas (41x44 Stepper) -->
-                                <form action="{{ route('cart.update', $variantId) }}" method="POST" class="flex items-center border border-line-strong rounded-lg bg-white overflow-hidden">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" 
-                                            name="quantity" 
-                                            value="{{ max(1, $item['quantity'] - 1) }}"
-                                            class="w-10 h-11 flex items-center justify-center text-ink hover:bg-surface-low font-bold transition"
-                                            {{ $item['quantity'] <= 1 ? 'disabled' : '' }}>
-                                        &minus;
-                                    </button>
-                                    <span class="w-10 text-center font-label text-sm font-bold text-navy">
-                                        {{ $item['quantity'] }}
-                                    </span>
-                                    <button type="submit" 
-                                            name="quantity" 
-                                            value="{{ min($item['max_stock'] ?? 99, $item['quantity'] + 1) }}"
-                                            class="w-10 h-11 flex items-center justify-center text-ink hover:bg-surface-low font-bold transition"
-                                            {{ $item['quantity'] >= ($item['max_stock'] ?? 99) ? 'disabled' : '' }}>
-                                        +
-                                    </button>
-                                </form>
+                                    <!-- Form Update Kuantitas (Stepper) -->
+                                    <form action="{{ route('cart.update', $variantId) }}" method="POST" class="flex items-center border border-line-strong rounded-lg bg-white overflow-hidden shrink-0">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" 
+                                                name="quantity" 
+                                                value="{{ max(1, $item['quantity'] - 1) }}"
+                                                class="w-8 sm:w-10 h-9 sm:h-11 flex items-center justify-center text-ink hover:bg-surface-low font-bold transition text-xs sm:text-sm"
+                                                {{ $item['quantity'] <= 1 ? 'disabled' : '' }}>
+                                            &minus;
+                                        </button>
+                                        <span class="w-8 sm:w-10 text-center font-label text-xs sm:text-sm font-bold text-navy">
+                                            {{ $item['quantity'] }}
+                                        </span>
+                                        <button type="submit" 
+                                                name="quantity" 
+                                                value="{{ min($item['max_stock'] ?? 99, $item['quantity'] + 1) }}"
+                                                class="w-8 sm:w-10 h-9 sm:h-11 flex items-center justify-center text-ink hover:bg-surface-low font-bold transition text-xs sm:text-sm"
+                                                {{ $item['quantity'] >= ($item['max_stock'] ?? 99) ? 'disabled' : '' }}>
+                                            +
+                                        </button>
+                                    </form>
+                                </div>
 
                                 <!-- Subtotal per Item & Hapus -->
-                                <div class="text-right min-w-[110px]">
-                                    <span class="font-label text-sm font-bold text-navy block">
+                                <div class="text-right shrink-0">
+                                    <span class="font-label text-[13px] sm:text-sm font-bold text-navy block whitespace-nowrap">
                                         Rp {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}
                                     </span>
                                     
                                     <form action="{{ route('cart.remove', $variantId) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="font-label text-sm text-red-600 hover:underline font-semibold mt-1">
+                                        <button type="submit" class="font-label text-xs sm:text-sm text-red-600 hover:underline font-semibold mt-0.5 cursor-pointer">
                                             Hapus
                                         </button>
+                                    </form>
+                                </div>
+                            </div>
                                     </form>
                                 </div>
 
