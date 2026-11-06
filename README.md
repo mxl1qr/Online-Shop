@@ -6,6 +6,15 @@ Proyek ini dibangun menggunakan Laravel 12, Tailwind CSS, Alpine.js, dan penguji
 
 ---
 
+## Akses Web Langsung (Live Demo)
+
+Aplikasi telah dipublikasikan dan dapat diakses langsung tanpa instalasi lokal:
+
+- **Tautan Website:** [https://sirkula1.wasmer.app](https://sirkula1.wasmer.app)
+- **Status Server:** Aktif (Wasmer Edge WebAssembly Environment)
+
+---
+
 ## Fitur Utama
 
 ### 1. Etalase & Pengalaman Belanja Publik
@@ -63,8 +72,8 @@ Ikuti langkah berikut untuk menjalankan proyek di komputer lokal:
 
 ### 1. Salin Repositori
 ```bash
-git clone https://github.com/username/nuevaweb.git
-cd nuevaweb
+git clone https://github.com/mxl1qr/Online-Shop.git
+cd Online-Shop
 ```
 
 ### 2. Pasang Dependensi PHP & JavaScript
@@ -120,12 +129,12 @@ Buka peramban dan akses alamat `http://127.0.0.1:8000`.
 
 ## Akun Pengguna Uji Coba
 
-Gunakan kredensial berikut untuk masuk dan menguji sistem:
+Gunakan kredensial akun bawaan seeder berikut untuk masuk dan menguji sistem (berlaku di server lokal maupun live demo):
 
 | Peran Akun | Email | Kata Sandi | Hak Akses |
 | :--- | :--- | :--- | :--- |
-| **Administrator** | `admin@sirkula.id` | `password` | CMS Admin, Pesanan, Stok, Cetak Resi, Konfigurasi |
-| **Member Pelanggan** | `member@sirkula.id` | `password` | Katalog, Keranjang, Checkout, Barcode Member, Riwayat |
+| **Administrator** | `admin@toko.com` | `password` | CMS Admin, Pesanan, Stok, Cetak Resi, Konfigurasi |
+| **Member Pelanggan** | `budi@gmail.com` | `password` | Katalog, Keranjang, Checkout, Barcode Member, Riwayat |
 
 ---
 
