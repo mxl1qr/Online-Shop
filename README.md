@@ -2,20 +2,70 @@
 
 Sirkula adalah platform e-commerce fashion sirkular untuk kurasi pakaian tangan pertama, surplus ekspor, dan arsip pilihan. Sistem mengintegrasikan verifikasi fisik pakaian, proses sanitasi medis uap-ozon, dan manajemen inventaris satu item satu stok (*1-of-1*).
 
-Proyek ini dibangun menggunakan Laravel 12, Tailwind CSS, Alpine.js, dan pengujian otomatis PHPUnit.
-
 ---
 
-## Akses Web Langsung (Live Demo)
+## Akses Web Langsung (Live Deployment)
 
-Aplikasi telah dipublikasikan dan dapat diakses langsung tanpa instalasi lokal:
+Aplikasi aktif dan dapat diuji langsung tanpa instalasi lokal:
 
 - **Tautan Website:** [https://sirkula1.wasmer.app](https://sirkula1.wasmer.app)
-- **Status Server:** Aktif (Wasmer Edge WebAssembly Environment)
+- **Infrastruktur Hosting:** Wasmer Edge WebAssembly (Wasm) Runtime Environment
 
 ---
 
-## Fitur Utama
+## Tumpukan Teknologi Lengkap (Comprehensive Tech Stack)
+
+Berikut rincian seluruh teknologi, paket, dan pustaka yang digunakan dalam proyek ini:
+
+### 1. Backend & Runtime
+- **Bahasa Pemrograman:** PHP 8.3.16 (Kebutuhan versi `^8.3` pada `composer.json`)
+- **Kerangka Kerja Utama:** Laravel Framework 13.36.0 (Laravel 13)
+- **Pola Arsitektur:** Model-View-Controller (MVC) + Service Layer (`App\Services\FirebaseService`) + Custom Artisan Commands (`app/Console/Commands/MigrateToFirebaseCommand.php`)
+- **Autentikasi & Scaffolding:** Laravel Breeze 2.4.2 (Stateful Session Auth, Middleware Proteksi Role)
+- **Object-Relational Mapping (ORM):** Laravel Eloquent ORM (Relasi `hasMany`, `belongsTo`, Eager Loading, Database Transactions, Agregasi Stok)
+- **Interactive REPL:** Laravel Tinker 3.0.2
+
+### 2. Basis Data & Penyimpanan
+- **Basis Data Utama (Aktif):** MySQL 8 / MariaDB (Driver PDO MySQL, skema: `nuevaweb`, port: 3306)
+- **Basis Data Alternatif:** SQLite 3 (Driver terintegrasi untuk portabilitas lokal)
+- **Driver Sesi:** Database Session (`sessions` table)
+- **Driver Antrean (Queue):** Database Queue (`jobs`, `failed_jobs` tables)
+- **Driver Cache:** Database Cache (`cache`, `cache_locks` tables)
+- **Basis Data Dokumen NoSQL:** Google Cloud Firestore (Sinkronisasi koleksi `products`, `categories`, `orders`, `users`, `settings` via REST API)
+
+### 3. Frontend & Antarmuka Pengguna
+- **Mesin Template:** Laravel Blade (Komponen modular, partisi view, layout inheritance, proteksi CSRF)
+- **Kerangka Kerja Reaktivitas:** Alpine.js 3.17.4 (State management client, drawer geser mobile, mega-menu hover, selektor interaktif varian warna/ukuran, kontrol kuantitas keranjang, sinkronisasi wishlist via `localStorage`)
+- **Kerangka Kerja CSS:** Tailwind CSS 3.4.19 (Sistem token desain kustom: Navy, Emerald, Ink, Canvas, Surface)
+- **Plugin Tailwind:** `@tailwindcss/forms 0.5.11` (Normalisasi elemen form formulir)
+- **Prapemroses CSS:** PostCSS 8.5.30 & Autoprefixer 10.6.1
+- **Asset Bundler & HMR:** Vite 8.3.4 dengan `laravel-vite-plugin 3.2.0`
+- **Tipografi:** Google Fonts CDN (Inter untuk body/teks label dan Plus Jakarta Sans untuk judul headline)
+- **Ikonografi:** Heroicons v2 (Inline SVG berbasis vektor tanpa dependensi font eksternal)
+- **Mesin Barcode:** Generator Vektor SVG Code-128 murni (ID numerik 13 digit keanggotaan pelanggan)
+
+### 4. Keamanan & Layanan Pihak Ketiga
+- **Autentikasi Google Sign-In:** Integrasi Google Identity Services & Firebase Authentication Web SDK v11
+- **Verifikasi Kriptografi Token:** Verifikasi tanda tangan digital Google ID Token (JWT) di sisi backend menggunakan sertifikat publik Google API JWK (`https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com`)
+- **Pengacakan Sandi (Hashing):** Algoritma Bcrypt dengan 12 putaran kerja (*12 rounds*)
+- **Mitigasi Serangan Web:** Perlindungan CSRF otomatis, prepared statements anti SQL Injection, XSS sanitization via Blade escaping, serta pembatasan laju request (*rate limiting throttle:6,1*)
+
+### 5. Pengujian & Kualitas Kode
+- **Kerangka Kerja Pengujian:** PHPUnit 12.5.39 (45 pengujian otomatis lolos, 126 asersi pengujian)
+- **Pustaka Mocking:** Mockery 1.6.15
+- **Generator Data Tiruan:** FakerPHP 1.24.1
+- **Pemeriksa Standar Kode:** Laravel Pint 1.32.1 (PHP CS Fixer)
+- **Pemantau Log Real-time:** Laravel Pail 1.2.7
+- **Diagnostik Pengujian CLI:** Laravel Pao 1.1.5 & NunoMaduro Collision 8.9.5
+
+### 6. Infrastruktur & Arsitektur Pengetahuan
+- **Hosting Produksi Edge:** Wasmer Edge WebAssembly (Wasm) Runtime Environment
+- **Server Web Lokal:** Laragon / Apache 2.4 / Nginx / PHP CLI Server
+- **Graf Pengetahuan Repositori:** Graphify Knowledge Graph (`graph.json`, ekstraksi AST simbol kode, dan sinkronisasi Obsidian Vault)
+
+---
+
+## Fitur Fungsional Sistem
 
 ### 1. Etalase & Pengalaman Belanja Publik
 - **Katalog Terkurasi:** Penelusuran produk berdasarkan kategori pakaian, ukuran (S, M, L, XL), dan urutan harga atau rilisan terbaru.
@@ -23,7 +73,7 @@ Aplikasi telah dipublikasikan dan dapat diakses langsung tanpa instalasi lokal:
 - **Standar SirkulaCare & SirkulaVerify:** Informasi transparan hasil inspeksi fisik 12 titik serta sertifikasi sanitasi uap 100°C dan gas ozon.
 - **Kupon Belanja:** Klaim kupon langsung dari etalase dengan mekanisme salin kode instan ke clipboard.
 - **Daftar Keinginan (Wishlist):** Penyimpanan item favorit berbasis peramban lokal (*localStorage*).
-- **Optimasi Mobile Ekstrem:** Penyesuaian layout hingga viewport terkecil (Mobile S - 320px) dengan benchmark visual retail global.
+- **Optimasi Mobile:** Penyesuaian tata letak hingga resolusi terkecil (Mobile S - 320px) dengan benchmark visual retail Uniqlo ID.
 
 ### 2. Transaksi & Checkout
 - **Keranjang Belanja:** Kontrol kuantitas otomatis sesuai batas stok fisik varian.
@@ -46,23 +96,13 @@ Aplikasi telah dipublikasikan dan dapat diakses langsung tanpa instalasi lokal:
 
 ---
 
-## Tumpukan Teknologi (Tech Stack)
-
-- **Backend:** PHP 8.2+, Laravel 12 (Breeze, Eloquent ORM)
-- **Frontend:** Blade Templates, Tailwind CSS 4, Alpine.js 3
-- **Asset Bundler:** Vite 6
-- **Autentikasi:** Laravel Session Auth & Integrasi Google Sign-In (Firebase SDK)
-- **Database:** SQLite (lingkungan pengembangan) / MySQL (lingkungan produksi)
-- **Pengujian:** PHPUnit (45 tes otomatis, 126 asersi)
-
----
-
-## Kebutuhan Sistem
+## Kebutuhan Sistem Lokal
 
 Pastikan komputer Anda telah terpasang:
-- PHP >= 8.2 dengan ekstensi `pdo`, `mbstring`, `openssl`, `curl`
-- Composer >= 2.0
-- Node.js >= 18.0 & npm
+- PHP >= 8.3 dengan ekstensi `pdo_mysql`, `pdo_sqlite`, `mbstring`, `openssl`, `curl`
+- Composer >= 2.2
+- Node.js >= 18.0 & npm >= 9.0
+- Server Database: MySQL 8.0+ / MariaDB 10.4+ (atau SQLite 3)
 
 ---
 
@@ -93,10 +133,9 @@ Buat kunci aplikasi:
 php artisan key:generate
 ```
 
-Secara default, aplikasi menggunakan SQLite. Buat berkas database lokal jika belum ada:
-```bash
-touch database/database.sqlite
-```
+Konfigurasi basis data pada `.env`:
+- **Opsi A (MySQL - Default):** Buat basis data bernama `nuevaweb` di MySQL lokal Anda. Pastikan `DB_CONNECTION=mysql`, `DB_DATABASE=nuevaweb`, `DB_USERNAME=root`, dan `DB_PASSWORD=` sesuai konfigurasi lokal Anda.
+- **Opsi B (SQLite):** Ubah `DB_CONNECTION=sqlite`, lalu buat berkas dengan perintah `touch database/database.sqlite`.
 
 Jalankan migrasi tabel dan data awal (seeder):
 ```bash
@@ -114,7 +153,7 @@ Jalankan kompilasi aset menggunakan Vite:
 ```bash
 npm run build
 ```
-Untuk mode pengembangan aktif:
+Untuk mode pengembangan aktif (*hot reload*):
 ```bash
 npm run dev
 ```
@@ -159,29 +198,34 @@ Duration: ~3.5s
 
 ```text
 ├── app/
+│   ├── Console/Commands/      # Perintah Artisan kustom (MigrateToFirebaseCommand)
 │   ├── Http/Controllers/
-│   │   ├── Admin/             # Controller CMS Administrator (Order, Product, Category, Setting)
+│   │   ├── Admin/             # Controller CMS Administrator (Order, Product, Category, Setting, User)
+│   │   ├── Auth/              # Controller Autentikasi Breeze & Firebase Google Sign-In
 │   │   ├── CartController.php # Manajemen sesi keranjang belanja
 │   │   ├── CheckoutController.php # Pemrosesan transaksi dan diskon
 │   │   ├── OrderController.php    # Riwayat dan pelacakan pesanan
 │   │   └── ProductController.php  # Etalase produk dan wishlist
-│   └── Models/                # Model Eloquent (Product, Variant, Category, Order, OrderItem)
+│   ├── Models/                # Model Eloquent (Product, Variant, Category, Order, OrderItem, User)
+│   └── Services/              # Layanan integrasi eksternal (FirebaseService)
 ├── database/
-│   ├── migrations/            # Skema tabel database relasional
-│   └── seeders/               # Data awal pakaian kurasi, kupon, dan akun
+│   ├── migrations/            # Skema migrasi tabel database relasional
+│   └── seeders/               # Data awal pakaian kurasi, kupon promo, dan akun pengguna
 ├── resources/
-│   ├── css/app.css            # Desain kustom Tailwind CSS
-│   ├── js/app.js              # Inisialisasi Alpine.js & logika klien
-│   └── views/                 # Blade template antarmuka pengguna
-│       ├── admin/             # Panel kelola CMS
-│       ├── auth/              # Halaman masuk dan daftar
-│       ├── cart/              # Keranjang belanja
-│       ├── checkout/          # Form alamat dan pembayaran
-│       ├── dashboard.blade.php# Portal member & barcode pelanggan
-│       └── products/          # Etalase PLP dan detail produk PDP
+│   ├── css/app.css            # Pengaturan direktif Tailwind CSS kustom
+│   ├── js/app.js              # Inisialisasi Alpine.js & logika sisi klien
+│   └── views/                 # Template antarmuka Blade
+│       ├── admin/             # Panel kelola CMS Administrator
+│       ├── auth/              # Formulir autentikasi masuk dan daftar
+│       ├── cart/              # Tampilan keranjang belanja
+│       ├── checkout/          # Formulir alamat, kalkulasi ongkir, dan pembayaran
+│       ├── dashboard.blade.php# Portal member & barcode keanggotaan
+│       ├── partials/          # Komponen modular (logo, mega-menu, drawer mobile)
+│       └── products/          # Etalase katalog (PLP) dan detail pakaian (PDP)
 ├── routes/
-│   └── web.php                # Definisi rute publik, member, dan admin
-└── tests/                     # Berkas pengujian otomatis fitur
+│   ├── auth.php               # Rute autentikasi Breeze & Firebase callback
+│   └── web.php                # Rute publik belanja, member, dan CMS admin
+└── tests/                     # Berkas pengujian otomatis PHPUnit Feature & Unit
 ```
 
 ---
